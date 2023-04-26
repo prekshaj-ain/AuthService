@@ -17,3 +17,5 @@ project Setup
   }
 }
 ```
+
+- Once you've added the config.json then go to src folder from terminal and execute `npx sequelize db:create` and then execute `npx sequelize db:migrate`
