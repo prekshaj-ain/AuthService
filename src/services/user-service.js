@@ -12,6 +12,7 @@ class UserService{
             return user; 
         }catch(err){
             console.log('Something went wrong at service layer');
+            throw err;
         }
     }
     async destroy(userId){
@@ -20,6 +21,7 @@ class UserService{
             return true;
         }catch(err){
             console.log('Something went wrong at service layer');
+            throw err;
         }
     }
 }
