@@ -62,8 +62,28 @@ const get = async (req,res)=>{
     }
 }
 
+const signin = async (req,res)=>{
+    try{
+        const response = await userService.signin(req.body.email,req.body.password);
+        return res.status(200).json({
+            data: response,
+            success: true,
+            message: "SignIn successful",
+            error: {}
+        }); 
+    }catch(error){
+        return res.status(500).json({
+            data: {},
+            success: false,
+            message: "Something went wrong",
+            error: error
+        })
+    }
+}
+
 module.exports = {
     create,
     destroy,
-    get
+    get,
+    signin
 }

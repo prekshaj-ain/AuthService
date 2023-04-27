@@ -12,7 +12,7 @@ class UserService{
 
     #createToken(user){
         try{
-            const result = jwt.sign(user, JWT_SECRET, 'secret', { expiresIn: '1d' });
+            const result = jwt.sign(user, JWT_SECRET, { expiresIn: '1d' });
             return result;
         }catch(err){
             console.log('Something went wrong in token creation');
@@ -41,7 +41,8 @@ class UserService{
     async create(data){
         try{
             const user = await this.userRepository.create(data);
-            return user; 
+            const newJWT = this.#createToken({email: user.email, id:user.id});
+            return newJWT;
         }catch(err){
             console.log('Something went wrong at service layer');
             throw err;
@@ -62,6 +63,22 @@ class UserService{
             const suer = await this.userRepository.get(userId);
         }catch(err){
             console.log('Something went wrong at service layer');
+            throw err;
+        }
+    }
+
+    async signin(email, password){
+        try{
+            const user = await this.userRepository.getByEmail(email);
+            const passwordMatch = this.#checkPassword(password,user.password);
+            if(!passwordMatch){
+                console.log('Wrong Password')
+                throw {error: 'incorrect password'};
+            }
+            const newJWT = this.#createToken({email: user.email, id:user.id});
+            return newJWT;
+        }catch(err){
+            console.log('Something went wrong in signin service');
             throw err;
         }
     }
