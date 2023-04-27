@@ -5,6 +5,7 @@ project Setup
 - execute `npm install` on the same path of root directory of the downloaded project
 - create the  `.env` file in your root directory and create the fllowing variables
     -   `PORT = 3001`
+    -   `JWT_SECRET = <YOUR_SECRET_TOKEN>`
 - Inside the src/config folder create a new file config.json and then add the following json code
 ```
 {
