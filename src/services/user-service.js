@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const UserRepository = require('../repository/user-repository');
 const { JWT_SECRET } = require('../config/serverConfig');
@@ -29,6 +30,14 @@ class UserService{
         }
     }
 
+    #checkPassword(userInputPassword, encryptedPassword){
+        try{
+            return bcrypt.compareSync(userInputPassword,encryptedPassword);
+        }catch(err){
+            console.log('Something went wrong in password comparison');
+            throw err;
+        }
+    }
     async create(data){
         try{
             const user = await this.userRepository.create(data);
