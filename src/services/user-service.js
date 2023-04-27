@@ -58,15 +58,6 @@ class UserService{
         }
     }
 
-    async get(userId){
-        try{
-            const suer = await this.userRepository.get(userId);
-        }catch(err){
-            console.log('Something went wrong at service layer');
-            throw err;
-        }
-    }
-
     async signin(email, password){
         try{
             const user = await this.userRepository.getByEmail(email);
@@ -79,6 +70,23 @@ class UserService{
             return newJWT;
         }catch(err){
             console.log('Something went wrong in signin service');
+            throw err;
+        }
+    }
+
+    async isAuthenticated(token){
+        try{
+            const response = this.#verifyToken(token);
+            if(!response){
+                throw {error: 'Invalid Token'};
+            }
+            const user = this.userRepository.get(response.id);
+            if(!user){
+                throw {error: 'No user exists with corresponding token'};
+            }
+            return user.id;
+        }catch(err){
+            console.log('Something went wrong in auth');
             throw err;
         }
     }

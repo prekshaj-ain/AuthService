@@ -43,25 +43,6 @@ const destroy = async (req,res)=>{
     }
 }
 
-const get = async (req,res)=>{
-    try{
-        const response = await userService.get(req.params.id);
-        return res.status(200).json({
-            data: response,
-            success: true,
-            message: "User fetched successfully",
-            error: {}
-        })
-    }catch(error){
-        return res.status(500).json({
-            data: {},
-            success: false,
-            message: "not able to fetch the user",
-            error: error
-        })
-    }
-}
-
 const signin = async (req,res)=>{
     try{
         const response = await userService.signin(req.body.email,req.body.password);
@@ -81,9 +62,29 @@ const signin = async (req,res)=>{
     }
 }
 
+const isAuthenticated = async (req,res)=>{
+    try{
+        const token = req.headers['x-access-token'];
+        const response = userService.isAuthenticated(token);
+        return res.status(200).json({
+            data: response,
+            success: true,
+            message: 'user is Authenticated and token is valid',
+            error: {}
+        });
+    }catch(error){
+        return res.status(500).json({
+            data: {},
+            success: false,
+            message: "Something went wrong",
+            error: error
+        })
+    }
+}
+
 module.exports = {
     create,
     destroy,
-    get,
-    signin
+    signin,
+    isAuthenticated
 }
