@@ -44,6 +44,9 @@ class UserService{
             const newJWT = this.#createToken({email: user.email, id:user.id});
             return newJWT;
         }catch(err){
+            if(err.name === "SequelizeValidationError"){
+                throw err;
+            }
             console.log('Something went wrong at service layer');
             throw err;
         }
