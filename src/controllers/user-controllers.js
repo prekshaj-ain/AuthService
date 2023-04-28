@@ -65,7 +65,7 @@ const signin = async (req,res)=>{
 const isAuthenticated = async (req,res)=>{
     try{
         const token = req.headers['x-access-token'];
-        const response = userService.isAuthenticated(token);
+        const response = await userService.isAuthenticated(token);
         return res.status(200).json({
             data: response,
             success: true,
@@ -82,9 +82,29 @@ const isAuthenticated = async (req,res)=>{
     }
 }
 
+const isAdmin = async (req,res)=>{
+    try{
+        const response = await userService.isAdmin(req.body.id);
+        return res.status(200).json({
+            data: response,
+            success: true,
+            message: 'successfully fetched whether user is admin or not',
+            error: {}
+        });
+    }catch(error){
+        return res.status(500).json({
+            data: {},
+            success: false,
+            message: "Something went wrong",
+            error: error
+        })
+    }
+}
+
 module.exports = {
     create,
     destroy,
     signin,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin
 }

@@ -10,6 +10,19 @@ const validateUser = (req,res,next)=>{
     next();
 }
 
+const validateIsAdminRequest = (req,res,next)=>{
+    if(!req.body.id){
+        return res.status(400).json({
+            data: {},
+            success: false,
+            message: "you must provide userId",
+            error: "userId is Missing",
+        })
+    }
+    next();
+}
+
 module.exports = {
-    validateUser
+    validateUser,
+    validateIsAdminRequest
 }

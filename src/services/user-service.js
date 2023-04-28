@@ -74,7 +74,7 @@ class UserService{
         }
     }
 
-    async isAuthenticated(token){
+    isAuthenticated(token){
         try{
             const response = this.#verifyToken(token);
             if(!response){
@@ -87,6 +87,15 @@ class UserService{
             return user.id;
         }catch(err){
             console.log('Something went wrong in auth');
+            throw err;
+        }
+    }
+
+    isAdmin(userId){
+        try{
+            return this.userRepository.isAdmin(userId);
+        }catch(err){
+            console.log('Something went wrong in service layer');
             throw err;
         }
     }
